@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+pnpm-debug.log*
+
+# Environment variables
+.env
+
+# Cache directories
+.cache
+.eslintcache
+
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.idea/
+*.swp
+*.swo
+*~

@@ -1,0 +1,16 @@
+# Ignore dependencies and local files that should not be in the image
+node_modules
+.git
+.gitignore
+.dockerignore
+Dockerfile
+
+# Results and reports folders that are generated when running, not when building
+data
+playwright-report
+test-results
+
+# IDE and OS configuration files
+.vscode
+.idea
+.DS_Store
