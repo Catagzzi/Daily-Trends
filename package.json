@@ -4,6 +4,10 @@
   "description": "Web scraper con Playwright",
   "main": "index.js",
   "scripts": {
+    "dev": "ts-node server.ts",
+    "dev:watch": "ts-node-dev --respawn server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write ."
@@ -16,8 +20,14 @@
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.18.3",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^4.21.1",
+    "playwright": "^1.56.0"
+  },
   "devDependencies": {
     "@playwright/test": "^1.56.0",
+    "@types/express": "^4.17.21",
     "@types/node": "^24.8.0",
     "@typescript-eslint/eslint-plugin": "^8.46.1",
     "@typescript-eslint/parser": "^8.46.1",
@@ -27,6 +37,7 @@
     "globals": "^16.4.0",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3"
   }
 }

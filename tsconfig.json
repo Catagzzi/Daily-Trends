@@ -13,6 +13,14 @@
     "moduleResolution": "node",
     "types": ["node", "@playwright/test"]
   },
-  "include": ["scripts/**/*", "utils/**/*"],
+  "include": [
+    "scripts/**/*",
+    "utils/**/*",
+    "services/**/*",
+    "middlewares/**/*",
+    "routes/**/*",
+    "app.ts",
+    "server.ts"
+  ],
   "exclude": ["node_modules", "dist", "data", "logs"]
 }
