@@ -19,6 +19,8 @@
     "services/**/*",
     "middlewares/**/*",
     "routes/**/*",
+    "controllers/**/*",
+    "types/**/*",
     "app.ts",
     "server.ts"
   ],
