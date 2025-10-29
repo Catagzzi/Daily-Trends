@@ -1,22 +1,25 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
+import { AppError } from '../utils/errors';
 
-interface CustomError extends Error {
-  statusCode?: number;
-  status?: string;
-}
+export const errorHandler = (
+  err: Error,
+  req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  const statusCode = err instanceof AppError ? err.statusCode : 500;
+  const message = err.message || 'Internal Server Error';
 
-export const errorHandler = (err: CustomError, req: Request, res: Response) => {
-  const statusCode = err.statusCode ?? 500;
-  const status = err.status || 'error';
-
-  console.error('Error:', {
+  console.error('ERROR:', {
     message: err.message,
     statusCode,
+    stack: err.stack,
+    path: req.path,
+    method: req.method,
   });
 
   res.status(statusCode).json({
-    status,
-    message: err.message || 'Internal Server Error',
+    message,
     ...(process.env.NODE_ENV === 'dev' && { stack: err.stack }),
   });
 };

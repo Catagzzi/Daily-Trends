@@ -1,12 +1,17 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import { errorHandler } from './middlewares/errorHandler';
 import { logger } from './middlewares/logger';
+import { NotFoundError } from '@utils/errors';
 import feedRoutes from './routes/feedRoutes';
+import cors from 'cors';
+import helmet from 'helmet';
 import 'dotenv/config';
 
 const app: Application = express();
 
-// middlewares
+//middlewares
+app.use(helmet());
+app.use(cors());
 app.use(express.json());
 app.use(logger);
 
@@ -24,15 +29,12 @@ app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// scraper routes
+// feed routes
 app.use('/api/feed', feedRoutes);
 
 // not found
-app.use('*', (req: Request, res: Response) => {
-  res.status(404).json({
-    error: 'Route not found',
-    path: req.path,
-  });
+app.use('*', (req: Request, res: Response, next: NextFunction) => {
+  next(new NotFoundError(`Route not found: ${req.path}`));
 });
 
 // middleware error handler

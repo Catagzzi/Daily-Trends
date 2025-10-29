@@ -21,12 +21,19 @@ export class FeedController {
     }
   };
 
-  createFeed = async (req: Request, res: Response, next: NextFunction) => {
+  createNewsItem = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log('Creating new feed');
+      const { title } = req.body;
+      console.log(`Creating new news item ${title}`);
+
       res.status(201).json({
         status: 'success',
-        message: 'Feed created (not implemented yet)',
+        message: 'News item created successfully (dummy response)',
+        data: {
+          id: `news_${Date.now()}`,
+          title,
+          createdAt: new Date().toISOString(),
+        },
       });
     } catch (error) {
       next(error);
