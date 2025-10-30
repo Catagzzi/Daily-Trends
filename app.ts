@@ -18,7 +18,7 @@ app.use(logger);
 // root
 app.get('/', (req: Request, res: Response) => {
   res.json({
-    message: 'Avantio API - Scraper Service',
+    message: 'Avantio API',
     version: '1.0.0',
     status: 'running',
   });
