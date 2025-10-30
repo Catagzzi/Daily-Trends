@@ -5,6 +5,11 @@
     "lib": ["ES2020"],
     "outDir": "./dist",
     "rootDir": "./",
+    "baseUrl": ".",
+    "paths": {
+      "@utils/*": ["./utils/*"],
+      "@appTypes/*": ["./types/*"]
+    },
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -13,6 +18,16 @@
     "moduleResolution": "node",
     "types": ["node", "@playwright/test"]
   },
-  "include": ["scripts/**/*", "utils/**/*"],
+  "include": [
+    "scripts/**/*",
+    "utils/**/*",
+    "services/**/*",
+    "middlewares/**/*",
+    "routes/**/*",
+    "controllers/**/*",
+    "types/**/*",
+    "app.ts",
+    "server.ts"
+  ],
   "exclude": ["node_modules", "dist", "data", "logs"]
 }
