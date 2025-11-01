@@ -1,25 +1,38 @@
-import { Feed } from '@appTypes/feed';
-import { NotFoundError, InternalServerError } from '@utils/errors';
+import { InternalServerError } from '@utils/errors';
+import { FeedRepository } from '../../repositories/FeedRepository';
 
 export class FeedService {
-  async getFeed(): Promise<Feed> {
+  private readonly repository: FeedRepository;
+
+  constructor() {
+    this.repository = new FeedRepository();
+  }
+
+  async getFeed(date: string, page: number, limit: number) {
     try {
-      console.log(`Getting feed`);
-      const feed = null;
+      const { items, total } = await this.repository.getFeedByDate(
+        date,
+        page,
+        limit
+      );
 
-      if (!feed) {
-        throw new NotFoundError('Feed not found');
-      }
+      const totalPages = Math.ceil(total / limit);
 
-      return feed;
+      return {
+        newsItems: items,
+        pagination: {
+          currentPage: page,
+          limit,
+          totalPages,
+          hasNextPage: page < totalPages,
+          hasPreviousPage: page > 1,
+        },
+      };
     } catch (error) {
       if (error instanceof Error) {
         throw error;
       }
-      console.error('Unexpected error in getFeed:', error);
-      throw new InternalServerError(
-        'An unexpected error occurred while fetching the feed'
-      );
+      throw new InternalServerError('Failed to fetch feed');
     }
   }
 }

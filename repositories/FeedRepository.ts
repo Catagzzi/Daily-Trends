@@ -11,22 +11,33 @@ export class FeedRepository {
     return NewsItemModel.findOne({ link });
   }
 
-  async getAllNews(): Promise<INewsItem[]> {
-    return NewsItemModel.find().sort({ createdAt: -1 });
-  }
+  async getFeedByDate(
+    date: string,
+    page: number,
+    limit: number
+  ): Promise<{ items: INewsItem[]; total: number }> {
 
-  async getFeedByDate(date: string): Promise<INewsItem[]> {
     const startDate = new Date(date);
     startDate.setHours(0, 0, 0, 0);
-
     const endDate = new Date(date);
     endDate.setHours(23, 59, 59, 999);
 
-    return NewsItemModel.find({
+    const query = {
       createdAt: {
         $gte: startDate,
         $lte: endDate,
       },
-    }).sort({ createdAt: -1 });
+    };
+
+    const skip = (page - 1) * limit;
+    const [items, total] = await Promise.all([
+      NewsItemModel.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit),
+      NewsItemModel.countDocuments(query),
+    ]);
+    if (items?.length === 0) {
+      console.log(`No items found for today: ${date}`);
+      return { items: [], total: 0 };
+    }
+    return { items, total };
   }
 }

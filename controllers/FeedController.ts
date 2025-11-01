@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { FeedService } from '../services/feed/FeedService';
 
 export class FeedController {
-  private feedService: FeedService;
+  private readonly feedService: FeedService;
 
   constructor() {
     this.feedService = new FeedService();
@@ -10,7 +10,12 @@ export class FeedController {
 
   getFeed = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const feed = await this.feedService.getFeed();
+      const { date, page, limit } = req.query;
+      const feed = await this.feedService.getFeed(
+        date as string,
+        Number(page) || 1,
+        Number(limit) || 5
+      );
 
       res.json({
         status: 'success',
