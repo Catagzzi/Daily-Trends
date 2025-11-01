@@ -1,13 +1,18 @@
-import { NewsItem, INewsItem } from '../models/NewsItem.model';
+import { NewsItem as NewsItemModel, INewsItem } from '../models/NewsItem.model';
+import { NewsItem } from '@appTypes/feed';
 
 export class FeedRepository {
-  async createNewsItem(data: { title: string }): Promise<INewsItem> {
-    const newsItem = new NewsItem(data);
+  async createNewsItem(data: NewsItem): Promise<INewsItem> {
+    const newsItem = new NewsItemModel(data);
     return newsItem.save();
   }
 
-  async getAllFeed(): Promise<INewsItem[]> {
-    return NewsItem.find().sort({ createdAt: -1 });
+  async findByLink(link: string): Promise<INewsItem | null> {
+    return NewsItemModel.findOne({ link });
+  }
+
+  async getAllNews(): Promise<INewsItem[]> {
+    return NewsItemModel.find().sort({ createdAt: -1 });
   }
 
   async getFeedByDate(date: string): Promise<INewsItem[]> {
@@ -17,7 +22,7 @@ export class FeedRepository {
     const endDate = new Date(date);
     endDate.setHours(23, 59, 59, 999);
 
-    return NewsItem.find({
+    return NewsItemModel.find({
       createdAt: {
         $gte: startDate,
         $lte: endDate,

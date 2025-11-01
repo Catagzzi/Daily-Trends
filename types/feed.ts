@@ -1,13 +1,14 @@
 export interface NewsItem {
-  id: string;
   title: string;
-  description: string;
-  publishedAt: Date;
-  source?: string;
-}
-
-export interface Feed {
+  link: string;
+  articleId?: string;
+  description?: string;
+  author?: string;
+  authorLink?: string;
+  place?: string;
   source: string;
+}
+export interface Feed {
   newsItems: NewsItem[];
   fetchedAt: Date;
   totalItems: number;
