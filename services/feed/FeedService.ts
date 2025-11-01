@@ -36,7 +36,7 @@ export class FeedService {
     }
   }
 
-  async createNewsItem(newsItem: NewsItem): Promise<NewsItem> {
+  async createNewsItem(newsItem: NewsItem) {
     try {
       const { link } = newsItem;
       const existingNewsItem = await this.repository.findByLink(link);
@@ -46,7 +46,64 @@ export class FeedService {
       const newNewsItem = await this.repository.createNewsItem(newsItem);
       return newNewsItem;
     } catch (error) {
-      throw new InternalServerError(`Failed to create news item: ${error}`);
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new InternalServerError('Failed to create news item');
+    }
+  }
+
+  async getNewsItem(id: string) {
+    try {
+      const newsItem = await this.repository.findById(id);
+      if (!newsItem) {
+        throw new BadRequestError(`News item not found: ${id}`);
+      }
+      return newsItem;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new InternalServerError('Error getting news item');
+    }
+  }
+
+  async deleteNewsItem(id: string) {
+    try {
+      const newsItem = await this.repository.findById(id);
+      if (!newsItem) {
+        throw new BadRequestError(`News item not found: ${id}`);
+      }
+      await this.repository.deleteById(id);
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new InternalServerError('Error deleting news item');
+    }
+  }
+
+  async updateNewsItem(id: string, data: Partial<NewsItem>) {
+    try {
+      const newsItem = await this.repository.findById(id);
+      if (!newsItem) {
+        throw new BadRequestError(`News item not found: ${id}`);
+      }
+
+      if (data.link && data.link !== newsItem.link) {
+        const existing = await this.repository.findByLink(data.link);
+        if (existing) {
+          throw new BadRequestError(`Link already exists: ${data.link}`);
+        }
+      }
+
+      const updatedNewsItem = await this.repository.updateById(id, data);
+      return updatedNewsItem;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new InternalServerError('Error updating news item');
     }
   }
 }

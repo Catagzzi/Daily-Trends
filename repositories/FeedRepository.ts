@@ -11,6 +11,18 @@ export class FeedRepository {
     return NewsItemModel.findOne({ link });
   }
 
+  async findById(id: string): Promise<INewsItem | null> {
+    return NewsItemModel.findById(id);
+  }
+
+  async deleteById(id: string): Promise<void> {
+    await NewsItemModel.findByIdAndDelete(id);
+  }
+
+  async updateById(id: string, data: Partial<NewsItem>): Promise<INewsItem | null> {
+    return NewsItemModel.findByIdAndUpdate(id, data, { new: true });
+  }
+
   async getFeedByDate(
     date: string,
     page: number,

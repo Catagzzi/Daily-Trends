@@ -41,4 +41,46 @@ export class FeedController {
       next(error);
     }
   };
+
+  getNewsItem = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const newsItem = await this.feedService.getNewsItem(id);
+
+      res.json({
+        status: 'success',
+        data: newsItem,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  deleteNewsItem = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      await this.feedService.deleteNewsItem(id);
+
+      res.json({
+        status: 'success',
+        message: 'News item deleted successfully',
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  updateNewsItem = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const updatedNewsItem = await this.feedService.updateNewsItem(id, req.body);
+
+      res.json({
+        status: 'success',
+        data: updatedNewsItem,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
