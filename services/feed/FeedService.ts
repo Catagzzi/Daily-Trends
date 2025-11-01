@@ -1,6 +1,6 @@
-import { InternalServerError } from '@utils/errors';
+import { InternalServerError, BadRequestError } from '@utils/errors';
 import { FeedRepository } from '../../repositories/FeedRepository';
-
+import { NewsItem } from '@appTypes/feed';
 export class FeedService {
   private readonly repository: FeedRepository;
 
@@ -33,6 +33,20 @@ export class FeedService {
         throw error;
       }
       throw new InternalServerError('Failed to fetch feed');
+    }
+  }
+
+  async createNewsItem(newsItem: NewsItem): Promise<NewsItem> {
+    try {
+      const { link } = newsItem;
+      const existingNewsItem = await this.repository.findByLink(link);
+      if (existingNewsItem) {
+        throw new BadRequestError(`Article link already exists: ${link}`);
+      }
+      const newNewsItem = await this.repository.createNewsItem(newsItem);
+      return newNewsItem;
+    } catch (error) {
+      throw new InternalServerError(`Failed to create news item: ${error}`);
     }
   }
 }

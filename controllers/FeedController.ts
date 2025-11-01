@@ -29,16 +29,13 @@ export class FeedController {
   createNewsItem = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { title } = req.body;
-      console.log(`Creating new news item ${title}`);
+      console.log(`Creating new item: ${title}`);
+
+      const createdNewsItem = await this.feedService.createNewsItem(req.body);
 
       res.status(201).json({
         status: 'success',
-        message: 'News item created successfully (dummy response)',
-        data: {
-          id: `news_${Date.now()}`,
-          title,
-          createdAt: new Date().toISOString(),
-        },
+        data: createdNewsItem,
       });
     } catch (error) {
       next(error);

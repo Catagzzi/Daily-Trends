@@ -23,3 +23,14 @@ export const getFeedSchema = z.object({
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().min(1).max(100).default(5),
 });
+
+export const createNewsSchema = z.object({
+  title: z.string().min(1),
+  link: z.url(),
+  articleId: z.string().optional(),
+  description: z.string().optional(),
+  author: z.string().optional(),
+  authorLink: z.string().optional(),
+  place: z.string().optional(),
+  source: z.enum(['EL_PAIS', 'EL_MUNDO', 'DAILY_TRENDS']),
+});

@@ -47,7 +47,7 @@ const NewsItemSchema = new Schema<INewsItem>(
     },
     source: {
       type: String,
-      enum: ['EL_PAIS', 'EL_MUNDO'],
+      enum: ['EL_PAIS', 'EL_MUNDO', 'DAILY_TRENDS'],
       required: true,
       trim: true,
     },
