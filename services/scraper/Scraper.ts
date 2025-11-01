@@ -1,6 +1,6 @@
 import { BrowserManager } from '@utils/BrowserManager';
 import { Page } from 'playwright';
-import { NewsItem, ArticleData } from '@appTypes/feed';
+import { NewsItem } from '@appTypes/feed';
 
 export abstract class Scraper {
   abstract sourceName: string;
@@ -26,12 +26,4 @@ export abstract class Scraper {
   }
 
   protected abstract extractNews(page: Page): Promise<NewsItem[]>;
-
-  protected formatData(data: ArticleData): NewsItem {
-    const item: NewsItem = {
-      ...data,
-      source: this.sourceName,
-    };
-    return item;
-  }
 }
