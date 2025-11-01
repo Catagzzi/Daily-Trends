@@ -3,10 +3,12 @@ import { Schema, model, Document } from 'mongoose';
 export interface INewsItem extends Document {
   title: string;
   link: string;
-  description: string;
-  author: string;
-  place: string;
+  articleId?: string;
+  description?: string;
+  author?: string;
+  authorLink?: string;
   source: string;
+  place?: string;
 }
 
 const NewsItemSchema = new Schema<INewsItem>(
@@ -23,11 +25,19 @@ const NewsItemSchema = new Schema<INewsItem>(
       unique: true,
       index: true,
     },
+    articleId: {
+      type: String,
+      trim: true,
+    },
     description: {
       type: String,
       trim: true,
     },
     author: {
+      type: String,
+      trim: true,
+    },
+    authorLink: {
       type: String,
       trim: true,
     },

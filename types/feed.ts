@@ -1,14 +1,13 @@
-export interface ArticleData {
+export interface NewsItem {
   title: string;
   link: string;
+  articleId?: string;
   description?: string;
   author?: string;
+  authorLink?: string;
   place?: string;
-}
-export interface NewsItem extends ArticleData {
   source: string;
 }
-
 export interface Feed {
   newsItems: NewsItem[];
   fetchedAt: Date;
