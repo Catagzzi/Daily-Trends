@@ -1,24 +1,34 @@
 import { Request, Response, NextFunction } from 'express';
 import { BadRequestError } from '@utils/errors';
+import { getFeedSchema } from '@appTypes/feed';
+import { z } from 'zod';
 
-export const validateGetFeed = (
+
+export function validateGetFeed(
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  const { date } = req.query;
-
-  if (!date) {
-    return next(new BadRequestError('Query parameter "date" is required'));
+) {
+  try {
+    getFeedSchema.parse(req.query);
+    next();
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      const message = error.issues
+        .map((issue) => `${issue.path.join('.')} -> ${issue.message}`)
+        .join(', ');
+      console.log(`Error in request validation: ${message}`);
+      return next(new BadRequestError(message));
+    }
+    next(error);
   }
-  next();
 };
 
-export const validateCreateNews = (
+export function validateCreateNews(
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+) {
   const { title } = req.body;
 
   if (!title) {
