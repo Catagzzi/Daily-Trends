@@ -16,7 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "moduleResolution": "node",
-    "types": ["node", "@playwright/test"]
+    "types": ["node", "@playwright/test", "jest"]
   },
   "include": [
     "scripts/**/*",
@@ -27,7 +27,9 @@
     "controllers/**/*",
     "types/**/*",
     "app.ts",
-    "server.ts"
+    "server.ts",
+    "repositories/**/*",
+    "**/*.test.ts"
   ],
   "exclude": ["node_modules", "dist", "data", "logs"]
 }
