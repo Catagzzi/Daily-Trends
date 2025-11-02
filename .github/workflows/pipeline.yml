@@ -29,6 +29,10 @@ jobs:
     # Solo ejecutar en push a main/dev/feat/deploy, no en PRs
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/feat/deploy')
     
+    permissions:
+      id-token: write
+      contents: read
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
