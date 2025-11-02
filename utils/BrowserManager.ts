@@ -4,7 +4,7 @@ import {
   Page,
   LaunchOptions,
   BrowserContextOptions,
-} from '@playwright/test';
+} from 'playwright';
 
 export class BrowserManager {
   private browser: Browser | null = null;
