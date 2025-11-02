@@ -1,0 +1,54 @@
+{
+  "family": "api",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "arn:aws:iam::758303613387:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::758303613387:role/ecsTaskRole",
+  "containerDefinitions": [
+    {
+      "name": "api",
+      "image": "758303613387.dkr.ecr.us-east-2.amazonaws.com/avantio-api:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "NODE_ENV",
+          "value": "prod"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "MONGO_URI",
+          "valueFrom": "arn:aws:secretsmanager:us-east-2:758303613387:secret:MONGO_URI-QkFDVw"
+        },
+        {
+          "name": "API_KEY",
+          "valueFrom": "arn:aws:secretsmanager:us-east-2:758303613387:secret:API_KEY-f3DibJ"
+        },
+        {
+          "name": "EL_PAIS_URL",
+          "valueFrom": "arn:aws:secretsmanager:us-east-2:758303613387:secret:EL_PAIS_URL-VheEX0"
+        },
+        {
+          "name": "EL_MUNDO_URL",
+          "valueFrom": "arn:aws:secretsmanager:us-east-2:758303613387:secret:EL_MUNDO_URL-i4XhCj"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/aws/ecs/api",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "api"
+        }
+      }
+    }
+  ]
+}
