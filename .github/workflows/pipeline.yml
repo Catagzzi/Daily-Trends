@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main, dev, feat/deploy]
+    branches: [main, dev]
     paths-ignore:
       - "*.md"
   pull_request:
@@ -26,8 +26,7 @@ jobs:
     name: Deploy to AWS ECR
     needs: lint
     runs-on: ubuntu-latest
-    # Solo ejecutar en push a main/dev/feat/deploy, no en PRs
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/feat/deploy')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
     
     permissions:
       id-token: write
@@ -37,7 +36,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Autenticación con OIDC (sin credenciales de larga duración)
       - name: Configure AWS credentials with OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -63,14 +61,14 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           
-          echo "✅ Image pushed successfully!"
+          echo "Image pushed successfully!"
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
   deploy-to-ecs:
     name: Deploy to AWS ECS
     needs: deploy-to-ecr
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/feat/deploy')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
     
     permissions:
       id-token: write
@@ -106,4 +104,4 @@ jobs:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: api-task-service-1sjdojku
           cluster: AppCluster
-          wait-for-service-stability: true
+          wait-for-service-stability: false
