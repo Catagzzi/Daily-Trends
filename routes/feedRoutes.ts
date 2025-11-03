@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { FeedController } from '../controllers/FeedController';
 import { authenticate } from '../middlewares/auth';
-import { 
-  validateGetFeed, 
+import {
+  validateGetFeed,
   validateCreateNews,
   validateGetNews,
-  validateUpdateNews
+  validateUpdateNews,
 } from '../middlewares/validation';
 
 const router = Router();

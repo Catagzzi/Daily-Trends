@@ -12,12 +12,12 @@ describe('FeedService', () => {
   beforeEach(() => {
     mockRepository = new FeedRepository() as jest.Mocked<FeedRepository>;
     service = new FeedService();
-    
+
     Object.defineProperty(service, 'repository', {
       value: mockRepository,
       writable: false,
     });
-    
+
     jest.clearAllMocks();
   });
 
@@ -231,4 +231,3 @@ describe('FeedService', () => {
     });
   });
 });
-

@@ -33,9 +33,9 @@ describe('ElMundoScraper', () => {
 
     scraper = new ElMundoScraper();
     Object.defineProperty(scraper, 'browserManager', {
-        value: mockBrowserManager,
-        writable: false,
-      });
+      value: mockBrowserManager,
+      writable: false,
+    });
 
     jest.clearAllMocks();
   });
@@ -63,10 +63,9 @@ describe('ElMundoScraper', () => {
       const result = await scraper.run();
 
       expect(mockBrowserManager.newPage).toHaveBeenCalled();
-      expect(mockPage.goto).toHaveBeenCalledWith(
-        'https://www.elmundo.es',
-        { waitUntil: 'domcontentloaded' }
-      );
+      expect(mockPage.goto).toHaveBeenCalledWith('https://www.elmundo.es', {
+        waitUntil: 'domcontentloaded',
+      });
       expect(result).toHaveLength(1);
       expect(result[0]).toEqual({
         title: 'Test Article',
@@ -116,14 +115,15 @@ describe('ElMundoScraper', () => {
 
       const mockMainContentLocator = {
         locator: jest.fn().mockReturnValue({
-          all: jest.fn().mockResolvedValue([mockArticleLocator1, mockArticleLocator2]),
+          all: jest
+            .fn()
+            .mockResolvedValue([mockArticleLocator1, mockArticleLocator2]),
         }),
       } as unknown as Locator;
 
       mockPage.locator = jest.fn().mockReturnValue(mockMainContentLocator);
 
       const result = await (scraper as any).extractNews(mockPage);
-      
 
       expect(result).toHaveLength(2);
       expect(result[0].title).toBe('First Article');
@@ -182,7 +182,9 @@ describe('ElMundoScraper', () => {
         place: 'Valencia',
       });
 
-      const result = await (scraper as any).extractArticleData(mockArticleLocator);
+      const result = await (scraper as any).extractArticleData(
+        mockArticleLocator
+      );
 
       expect(result).toEqual({
         title: 'Complete Article',
@@ -202,7 +204,9 @@ describe('ElMundoScraper', () => {
         link: 'https://www.elmundo.es/basic',
       });
 
-      const result = await (scraper as any).extractArticleData(mockArticleLocator);
+      const result = await (scraper as any).extractArticleData(
+        mockArticleLocator
+      );
 
       expect(result).toEqual({
         title: 'Basic Article',
@@ -219,7 +223,9 @@ describe('ElMundoScraper', () => {
         link: 'https://www.elmundo.es/no-title',
       });
 
-      const result = await (scraper as any).extractArticleData(mockArticleLocator);
+      const result = await (scraper as any).extractArticleData(
+        mockArticleLocator
+      );
 
       expect(result).toBeNull();
     });
@@ -231,7 +237,9 @@ describe('ElMundoScraper', () => {
         link: null,
       });
 
-      const result = await (scraper as any).extractArticleData(mockArticleLocator);
+      const result = await (scraper as any).extractArticleData(
+        mockArticleLocator
+      );
 
       expect(result).toBeNull();
     });
@@ -243,7 +251,9 @@ describe('ElMundoScraper', () => {
         link: 'https://www.elmundo.es/no-id',
       });
 
-      const result = await (scraper as any).extractArticleData(mockArticleLocator);
+      const result = await (scraper as any).extractArticleData(
+        mockArticleLocator
+      );
 
       expect(result).toBeNull();
     });

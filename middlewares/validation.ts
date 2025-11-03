@@ -1,8 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { BadRequestError } from '@utils/errors';
-import { getFeedSchema, createNewsSchema, getNewsSchema, updateNewsSchema } from '@appTypes/feed';
+import {
+  getFeedSchema,
+  createNewsSchema,
+  getNewsSchema,
+  updateNewsSchema,
+} from '@appTypes/feed';
 import { z } from 'zod';
-
 
 export function validateGetFeed(
   req: Request,
@@ -22,7 +26,7 @@ export function validateGetFeed(
     }
     next(error);
   }
-};
+}
 
 export function validateCreateNews(
   req: Request,
@@ -70,7 +74,7 @@ export function validateUpdateNews(
   next: NextFunction
 ) {
   try {
-    const dataToUpdate = {id: req.params.id,  ...req.body };
+    const dataToUpdate = { id: req.params.id, ...req.body };
     updateNewsSchema.parse(dataToUpdate);
     next();
   } catch (error) {
@@ -83,4 +87,4 @@ export function validateUpdateNews(
     }
     next(error);
   }
-};
+}

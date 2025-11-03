@@ -27,7 +27,7 @@ export interface ElMundoMockArticleConfig extends BaseMockArticleConfig {
   articleId: string | null;
 }
 
-export interface ElPaisMockArticleConfig extends BaseMockArticleConfig {}
+export type ElPaisMockArticleConfig = BaseMockArticleConfig;
 
 export function createElMundoMockArticleLocator(
   data: ElMundoMockArticleConfig
@@ -143,4 +143,3 @@ export function createElPaisMockArticleLocator(
 
   return mockArticleLocator;
 }
-

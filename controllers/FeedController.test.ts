@@ -73,8 +73,18 @@ describe('FeedController', () => {
     it('should return feed with default pagination', async () => {
       const mockFeedData: TestFeedResponse = {
         newsItems: [
-          { _id: '1', title: 'News 1', link: 'https://example.com/1', source: 'EL_PAIS' },
-          { _id: '2', title: 'News 2', link: 'https://example.com/2', source: 'EL_MUNDO' },
+          {
+            _id: '1',
+            title: 'News 1',
+            link: 'https://example.com/1',
+            source: 'EL_PAIS',
+          },
+          {
+            _id: '2',
+            title: 'News 2',
+            link: 'https://example.com/2',
+            source: 'EL_MUNDO',
+          },
         ],
         pagination: {
           currentPage: 1,
@@ -88,7 +98,11 @@ describe('FeedController', () => {
       mockRequest.query = { date: '2024-01-15' };
       mockFeedService.getFeed.mockResolvedValue(mockFeedData as any);
 
-      await controller.getFeed(mockRequest as Request, mockResponse as Response, mockNext);
+      await controller.getFeed(
+        mockRequest as Request,
+        mockResponse as Response,
+        mockNext
+      );
 
       expect(mockFeedService.getFeed).toHaveBeenCalledWith('2024-01-15', 1, 5);
       expect(mockResponse.json).toHaveBeenCalledWith({
@@ -103,7 +117,11 @@ describe('FeedController', () => {
       mockRequest.query = { date: 'invalid' };
       mockFeedService.getFeed.mockRejectedValue(error);
 
-      await controller.getFeed(mockRequest as Request, mockResponse as Response, mockNext);
+      await controller.getFeed(
+        mockRequest as Request,
+        mockResponse as Response,
+        mockNext
+      );
 
       expect(mockNext).toHaveBeenCalledWith(error);
       expect(mockResponse.json).not.toHaveBeenCalled();
@@ -127,7 +145,11 @@ describe('FeedController', () => {
       mockRequest.body = newsItemData;
       mockFeedService.createNewsItem.mockResolvedValue(createdItem as any);
 
-      await controller.createNewsItem(mockRequest as Request, mockResponse as Response, mockNext);
+      await controller.createNewsItem(
+        mockRequest as Request,
+        mockResponse as Response,
+        mockNext
+      );
 
       expect(mockFeedService.createNewsItem).toHaveBeenCalledWith(newsItemData);
       expect(mockResponse.status).toHaveBeenCalledWith(201);
@@ -147,7 +169,11 @@ describe('FeedController', () => {
       };
       mockFeedService.createNewsItem.mockRejectedValue(error);
 
-      await controller.createNewsItem(mockRequest as Request, mockResponse as Response, mockNext);
+      await controller.createNewsItem(
+        mockRequest as Request,
+        mockResponse as Response,
+        mockNext
+      );
 
       expect(mockNext).toHaveBeenCalledWith(error);
       expect(mockResponse.json).not.toHaveBeenCalled();
@@ -168,7 +194,11 @@ describe('FeedController', () => {
       mockRequest.params = { id: '123' };
       mockFeedService.getNewsItem.mockResolvedValue(newsItem as any);
 
-      await controller.getNewsItem(mockRequest as Request, mockResponse as Response, mockNext);
+      await controller.getNewsItem(
+        mockRequest as Request,
+        mockResponse as Response,
+        mockNext
+      );
 
       expect(mockFeedService.getNewsItem).toHaveBeenCalledWith('123');
       expect(mockResponse.json).toHaveBeenCalledWith({
@@ -183,7 +213,11 @@ describe('FeedController', () => {
       mockRequest.params = { id: 'nonexistent' };
       mockFeedService.getNewsItem.mockRejectedValue(error);
 
-      await controller.getNewsItem(mockRequest as Request, mockResponse as Response, mockNext);
+      await controller.getNewsItem(
+        mockRequest as Request,
+        mockResponse as Response,
+        mockNext
+      );
 
       expect(mockNext).toHaveBeenCalledWith(error);
       expect(mockResponse.json).not.toHaveBeenCalled();
@@ -195,7 +229,11 @@ describe('FeedController', () => {
       mockRequest.params = { id: '123' };
       mockFeedService.deleteNewsItem.mockResolvedValue(undefined);
 
-      await controller.deleteNewsItem(mockRequest as Request, mockResponse as Response, mockNext);
+      await controller.deleteNewsItem(
+        mockRequest as Request,
+        mockResponse as Response,
+        mockNext
+      );
 
       expect(mockFeedService.deleteNewsItem).toHaveBeenCalledWith('123');
       expect(mockResponse.json).toHaveBeenCalledWith({
@@ -210,7 +248,11 @@ describe('FeedController', () => {
       mockRequest.params = { id: 'nonexistent' };
       mockFeedService.deleteNewsItem.mockRejectedValue(error);
 
-      await controller.deleteNewsItem(mockRequest as Request, mockResponse as Response, mockNext);
+      await controller.deleteNewsItem(
+        mockRequest as Request,
+        mockResponse as Response,
+        mockNext
+      );
 
       expect(mockNext).toHaveBeenCalledWith(error);
       expect(mockResponse.json).not.toHaveBeenCalled();
@@ -237,9 +279,16 @@ describe('FeedController', () => {
       mockRequest.body = updateData;
       mockFeedService.updateNewsItem.mockResolvedValue(updatedItem as any);
 
-      await controller.updateNewsItem(mockRequest as Request, mockResponse as Response, mockNext);
+      await controller.updateNewsItem(
+        mockRequest as Request,
+        mockResponse as Response,
+        mockNext
+      );
 
-      expect(mockFeedService.updateNewsItem).toHaveBeenCalledWith('123', updateData);
+      expect(mockFeedService.updateNewsItem).toHaveBeenCalledWith(
+        '123',
+        updateData
+      );
       expect(mockResponse.json).toHaveBeenCalledWith({
         status: 'success',
         data: updatedItem,
@@ -253,11 +302,14 @@ describe('FeedController', () => {
       mockRequest.body = { title: 'Updated' };
       mockFeedService.updateNewsItem.mockRejectedValue(error);
 
-      await controller.updateNewsItem(mockRequest as Request, mockResponse as Response, mockNext);
+      await controller.updateNewsItem(
+        mockRequest as Request,
+        mockResponse as Response,
+        mockNext
+      );
 
       expect(mockNext).toHaveBeenCalledWith(error);
       expect(mockResponse.json).not.toHaveBeenCalled();
     });
   });
 });
-

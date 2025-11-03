@@ -62,10 +62,9 @@ describe('ElPaisScraper', () => {
       const result = await scraper.run();
 
       expect(mockBrowserManager.newPage).toHaveBeenCalled();
-      expect(mockPage.goto).toHaveBeenCalledWith(
-        'https://elpais.com',
-        { waitUntil: 'domcontentloaded' }
-      );
+      expect(mockPage.goto).toHaveBeenCalledWith('https://elpais.com', {
+        waitUntil: 'domcontentloaded',
+      });
       expect(result).toHaveLength(1);
       expect(result[0]).toEqual({
         title: 'Test Article',
@@ -112,7 +111,9 @@ describe('ElPaisScraper', () => {
 
       const mockMainSectionLocator = {
         locator: jest.fn().mockReturnValue({
-          all: jest.fn().mockResolvedValue([mockArticleLocator1, mockArticleLocator2]),
+          all: jest
+            .fn()
+            .mockResolvedValue([mockArticleLocator1, mockArticleLocator2]),
         }),
       } as unknown as Locator;
 
@@ -177,7 +178,9 @@ describe('ElPaisScraper', () => {
         place: 'Valencia',
       });
 
-      const result = await (scraper as any).extractArticleData(mockArticleLocator);
+      const result = await (scraper as any).extractArticleData(
+        mockArticleLocator
+      );
 
       expect(result).toEqual({
         title: 'Complete Article',
@@ -196,7 +199,9 @@ describe('ElPaisScraper', () => {
         link: 'https://elpais.com/basic',
       });
 
-      const result = await (scraper as any).extractArticleData(mockArticleLocator);
+      const result = await (scraper as any).extractArticleData(
+        mockArticleLocator
+      );
 
       expect(result).toEqual({
         title: 'Basic Article',
@@ -211,7 +216,9 @@ describe('ElPaisScraper', () => {
         link: 'https://elpais.com/no-title',
       });
 
-      const result = await (scraper as any).extractArticleData(mockArticleLocator);
+      const result = await (scraper as any).extractArticleData(
+        mockArticleLocator
+      );
 
       expect(result).toBeNull();
     });
@@ -222,10 +229,11 @@ describe('ElPaisScraper', () => {
         link: null,
       });
 
-      const result = await (scraper as any).extractArticleData(mockArticleLocator);
+      const result = await (scraper as any).extractArticleData(
+        mockArticleLocator
+      );
 
       expect(result).toBeNull();
     });
   });
 });
-

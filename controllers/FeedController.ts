@@ -73,7 +73,10 @@ export class FeedController {
   updateNewsItem = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      const updatedNewsItem = await this.feedService.updateNewsItem(id, req.body);
+      const updatedNewsItem = await this.feedService.updateNewsItem(
+        id,
+        req.body
+      );
 
       res.json({
         status: 'success',
