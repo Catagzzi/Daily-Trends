@@ -153,5 +153,111 @@ describe('FeedController', () => {
       expect(mockResponse.json).not.toHaveBeenCalled();
     });
   });
+
+  describe('getNewsItem', () => {
+    it('should return a news item by id', async () => {
+      const newsItem: TestNewsItem = {
+        _id: '123',
+        title: 'Test Article',
+        link: 'https://example.com/test',
+        source: 'EL_PAIS',
+        description: 'Test description',
+        createdAt: new Date(),
+      };
+
+      mockRequest.params = { id: '123' };
+      mockFeedService.getNewsItem.mockResolvedValue(newsItem as any);
+
+      await controller.getNewsItem(mockRequest as Request, mockResponse as Response, mockNext);
+
+      expect(mockFeedService.getNewsItem).toHaveBeenCalledWith('123');
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        status: 'success',
+        data: newsItem,
+      });
+      expect(mockNext).not.toHaveBeenCalled();
+    });
+
+    it('should handle not found error', async () => {
+      const error = new BadRequestError('News item not found');
+      mockRequest.params = { id: 'nonexistent' };
+      mockFeedService.getNewsItem.mockRejectedValue(error);
+
+      await controller.getNewsItem(mockRequest as Request, mockResponse as Response, mockNext);
+
+      expect(mockNext).toHaveBeenCalledWith(error);
+      expect(mockResponse.json).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('deleteNewsItem', () => {
+    it('should delete a news item and return success message', async () => {
+      mockRequest.params = { id: '123' };
+      mockFeedService.deleteNewsItem.mockResolvedValue(undefined);
+
+      await controller.deleteNewsItem(mockRequest as Request, mockResponse as Response, mockNext);
+
+      expect(mockFeedService.deleteNewsItem).toHaveBeenCalledWith('123');
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        status: 'success',
+        message: 'News item deleted successfully',
+      });
+      expect(mockNext).not.toHaveBeenCalled();
+    });
+
+    it('should handle deletion error', async () => {
+      const error = new BadRequestError('News item not found');
+      mockRequest.params = { id: 'nonexistent' };
+      mockFeedService.deleteNewsItem.mockRejectedValue(error);
+
+      await controller.deleteNewsItem(mockRequest as Request, mockResponse as Response, mockNext);
+
+      expect(mockNext).toHaveBeenCalledWith(error);
+      expect(mockResponse.json).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('updateNewsItem', () => {
+    it('should update a news item and return updated data', async () => {
+      const updateData = {
+        title: 'Updated Article',
+        description: 'Updated description',
+      };
+
+      const updatedItem: TestNewsItem = {
+        _id: '123',
+        title: 'Updated Article',
+        link: 'https://example.com/test',
+        source: 'EL_PAIS',
+        description: 'Updated description',
+        createdAt: new Date(),
+      };
+
+      mockRequest.params = { id: '123' };
+      mockRequest.body = updateData;
+      mockFeedService.updateNewsItem.mockResolvedValue(updatedItem as any);
+
+      await controller.updateNewsItem(mockRequest as Request, mockResponse as Response, mockNext);
+
+      expect(mockFeedService.updateNewsItem).toHaveBeenCalledWith('123', updateData);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        status: 'success',
+        data: updatedItem,
+      });
+      expect(mockNext).not.toHaveBeenCalled();
+    });
+
+    it('should handle update error', async () => {
+      const error = new BadRequestError('News item not found');
+      mockRequest.params = { id: 'nonexistent' };
+      mockRequest.body = { title: 'Updated' };
+      mockFeedService.updateNewsItem.mockRejectedValue(error);
+
+      await controller.updateNewsItem(mockRequest as Request, mockResponse as Response, mockNext);
+
+      expect(mockNext).toHaveBeenCalledWith(error);
+      expect(mockResponse.json).not.toHaveBeenCalled();
+    });
+  });
 });
 
