@@ -36,15 +36,11 @@ export const createNewsSchema = z.object({
 });
 
 export const getNewsSchema = z.object({
-  id: z
-    .string()
-    .regex(/^[a-f\d]{24}$/i, 'Invalid mongoDB objectId format'),
+  id: z.string().regex(/^[a-f\d]{24}$/i, 'Invalid mongoDB objectId format'),
 });
 
 export const updateNewsSchema = z.object({
-  id: z
-    .string()
-    .regex(/^[a-f\d]{24}$/i, 'Invalid mongoDB objectId format'),
+  id: z.string().regex(/^[a-f\d]{24}$/i, 'Invalid mongoDB objectId format'),
   title: z.string().min(1).optional(),
   link: z.url().optional(),
   articleId: z.string().optional(),

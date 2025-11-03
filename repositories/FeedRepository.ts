@@ -19,7 +19,10 @@ export class FeedRepository {
     await NewsItemModel.findByIdAndDelete(id);
   }
 
-  async updateById(id: string, data: Partial<NewsItem>): Promise<INewsItem | null> {
+  async updateById(
+    id: string,
+    data: Partial<NewsItem>
+  ): Promise<INewsItem | null> {
     return NewsItemModel.findByIdAndUpdate(id, data, { new: true });
   }
 
@@ -28,7 +31,6 @@ export class FeedRepository {
     page: number,
     limit: number
   ): Promise<{ items: INewsItem[]; total: number }> {
-
     const startDate = new Date(date);
     startDate.setHours(0, 0, 0, 0);
     const endDate = new Date(date);
