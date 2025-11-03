@@ -82,6 +82,21 @@ http://localhost:3000/api
 docker exec avantio-api npm run scrape
 ```
 
+## Test coverage
+
+To check the test coverage run the following command:
+
+```bash
+pnpm run test:coverage
+```
+
+Then a coverage folder should be created in the root path, so now you can check the coverage opening this file:
+
+```bash
+open coverage/lcov-report/index.html
+```
+
+
 
 ## AWS Deployment
 
